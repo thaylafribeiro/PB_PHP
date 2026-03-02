@@ -12,10 +12,11 @@ class ProdutoController{
     public function cadastrar(){
         $nome = $_POST['nome'];
         $valor = $_POST['valor'];
-        $quantidade_estoque = $_POST['quantidade'];
-        $data_validade = $_POST['data'];
+        $quantidade = $_POST['quantidade'];
+        $data = $_POST['data'];
 
-        $produto = new Produto($nome, $valor, $quantidade_estoque, $data_validade);
+        $produto = new Produto($nome, $valor, $quantidade, $data);
+
         $produto->Salvar();
         header('Location: /PB_PHP/Atividade_01/produto/telaCadastro');
         exit;
@@ -30,4 +31,22 @@ class ProdutoController{
 
     }
 
+     public function telaEditar(){
+        $produto = Produto::buscar($_GET['id']);
+        require 'View/telaEditar.php';
     }
+
+    public function atualizar(){
+        $produto = new Produto($_POST['nome'], $_POST['valor'], $_POST['quantidade'], $_POST['data']);
+        $produto->atualizar($_GET['id']);
+        header('Location: /PB_PHP/Atividade_01/produto/telaEditar?id='.($_GET['id']));
+        exit;
+    }
+
+    public function excluir(){
+        Produto::excluir($_GET['id']);
+        header('Location: /PB_PHP/Atividade_01/produto/listar');
+        exit;
+    }
+}
+    
